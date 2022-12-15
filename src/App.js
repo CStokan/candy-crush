@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import blueCandy from './images/blueCandy.png'
+import greenCandy from './images/greenCandy.png'
+import orangeCandy from './images/orangeCandy.png'
+import purpleCandy from './images/purpleCandy.png'
+import redCandy from './images/redCandy.png'
+import yellowCandy from './images/yellowCandy.png'
+import blank from './images/blank.png'
+
 
 // TILES_PER_ROW of the board
 const TILES_PER_ROW = 8;
 
 // Candy colours
 const candyColours= [
-  'red',
-  'yellow',
-  'orange',
-  'purple',
-  'green',
-  'blue'
+  redCandy,
+  yellowCandy,
+  orangeCandy,
+  purpleCandy,
+  greenCandy,
+  blueCandy,
 ]
 
 const App = () => {
@@ -25,12 +33,12 @@ const App = () => {
   
   // Function to check if the move is valid
   function isValid(){
-    const isColumnOfThree = checkForColumnOfThree()
     const isColumnOfFour = checkForColumnOfFour()
-    const isRowOfThree = checkForRowOfThree()
     const isRowOfFour = checkForRowOfFour()
+    const isColumnOfThree = checkForColumnOfThree()
+    const isRowOfThree = checkForRowOfThree()
 
-    if(isColumnOfThree || isColumnOfFour || isRowOfThree || isRowOfFour) {
+    if(isColumnOfFour ||isRowOfFour || isColumnOfThree || isRowOfThree ) {
       return true
     }
   }
@@ -43,12 +51,12 @@ const App = () => {
       // Gets the colour of the first item in the array
       const decidedColour = currentColourArray[i]
 
-      const isBlank = currentColourArray[i] === ''
+      const isBlank = currentColourArray[i] === blank
       
       // checks if the three items in the column are the same colour if true turn blank
       if(columnOfFour.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
         columnOfFour.forEach(square => {
-        currentColourArray[square] = ''})
+        currentColourArray[square] = blank})
         return true;
       }
     }
@@ -62,12 +70,12 @@ const App = () => {
       // Gets the colour of the first item in the array
       const decidedColour = currentColourArray[i]
 
-      const isBlank = currentColourArray[i] === ''
+      const isBlank = currentColourArray[i] === blank
 
       // checks if the three items in the column are the same colour if true turn blank
       if(columnOfThree.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
         columnOfThree.forEach(square => {
-        currentColourArray[square] = ''})
+        currentColourArray[square] = blank})
         return true;
       }
     }
@@ -82,14 +90,14 @@ const App = () => {
       const decidedColour = currentColourArray[i]
       const notValid = [5,6,7,13,14,15,21,22,23,29,30,31,37,38,39,45,46,47,53,54,55,61,62,63]
 
-      const isBlank = currentColourArray[i] === ''
+      const isBlank = currentColourArray[i] === blank
       // Check if the index is in the notValid array
       if(notValid.includes(i)) continue
 
       // checks if the three items in the column are the same colour if true turn blank
       if(rowOfFour.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
         rowOfFour.forEach(square => {
-          currentColourArray[square] = ''})
+          currentColourArray[square] = blank})
         return true;
       }
     }
@@ -104,14 +112,14 @@ const App = () => {
       const decidedColour = currentColourArray[i]
       const notValid = [6,7,14,15,22,23,30,31,38,39,46,47,54,55,62,63]
 
-      const isBlank = currentColourArray[i] === ''
+      const isBlank = currentColourArray[i] === blank
       // Check if the index is in the notValid array
       if(notValid.includes(i)) continue
 
       // checks if the three items in the column are the same colour if true turn blank
       if(rowOfThree.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
         rowOfThree.forEach(square => {
-          currentColourArray[square] = ''})
+          currentColourArray[square] = blank})
           return true;
       }
     }
@@ -127,13 +135,13 @@ const App = () => {
 
       const isFirstRow = firstRow.includes(i)
 
-      if(isFirstRow && currentColourArray[i] === '') {
+      if(isFirstRow && currentColourArray[i] === blank) {
         currentColourArray[i] = candyColours[Math.floor(Math.random() * candyColours.length)]
       }
 
-      if(currentColourArray[i + TILES_PER_ROW] === '') {
+      if(currentColourArray[i + TILES_PER_ROW] === blank) {
         currentColourArray[i + TILES_PER_ROW] = currentColourArray[i]
-        currentColourArray[i] = ''
+        currentColourArray[i] = blank
       }
     }
     
@@ -165,8 +173,8 @@ const App = () => {
 
     // Swaps the img being dragged with the img being dropped on
     
-    currentColourArray[squareBeingReplacedId] = squareBeingDragged.style.backgroundColor
-    currentColourArray[squareBeingDraggedId] = squareBeingReplaced.style.backgroundColor
+    currentColourArray[squareBeingReplacedId] = squareBeingDragged.getAttribute('src')
+    currentColourArray[squareBeingDraggedId] = squareBeingReplaced.getAttribute('src')
 
     // Checks if the square being dragged is next to the square being replaced
     const validMoves = [
@@ -186,15 +194,14 @@ const App = () => {
     } else{
       
       console.log("invalid move")
-      currentColourArray[squareBeingReplacedId] = squareBeingReplaced.style.backgroundColor
-      currentColourArray[squareBeingDraggedId] = squareBeingDragged.style.backgroundColor
+      currentColourArray[squareBeingReplacedId] = squareBeingReplaced.getAttribute('src')
+      currentColourArray[squareBeingDraggedId] = squareBeingDragged.getAttribute('src')
       setCurrentColourArray([...currentColourArray])
       
     }
   
   }
 
-  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
   // Function to create the board
   const createBoard = () => {
     const randomColourArray = []
@@ -238,7 +245,7 @@ const App = () => {
         {currentColourArray.map((candyColour, index) => (
           <img 
             key={index} 
-            style={{backgroundColor: candyColour}}
+            src={candyColour}
             alt={candyColour}
             data-id={index}
             draggable="true"

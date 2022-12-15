@@ -1,6 +1,7 @@
 .app {
   display: flex;
   padding: 30px;
+  justify-content: center;
 }
 
 .game {
@@ -13,4 +14,5 @@
 .game img {
   width: 70px;
   height: 70px;
+  
 }
