@@ -6,6 +6,7 @@ import purpleCandy from './images/purpleCandy.png'
 import redCandy from './images/redCandy.png'
 import yellowCandy from './images/yellowCandy.png'
 import blank from './images/blank.png'
+import Scoreboard from './components/ScoreBoard';
 
 
 // TILES_PER_ROW of the board
@@ -29,6 +30,8 @@ const App = () => {
   const [squareBeingDragged, setSquareBeingDragged] = useState(null)
   // determings the square being replaced and shows the img properties
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null)
+  // determings the square being dragged and shows the img properties
+  const [scoreDisplay, setScoreDisplay] = useState(0)
 
   
   // Function to check if the move is valid
@@ -50,13 +53,13 @@ const App = () => {
       const columnOfFour = [i, i+TILES_PER_ROW, i+TILES_PER_ROW*2 , i+TILES_PER_ROW*3]
       // Gets the colour of the first item in the array
       const decidedColour = currentColourArray[i]
-
+      // Checks if the colour is blank to stop counting as a match
       const isBlank = currentColourArray[i] === blank
       
       // checks if the three items in the column are the same colour if true turn blank
       if(columnOfFour.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
-        columnOfFour.forEach(square => {
-        currentColourArray[square] = blank})
+        columnOfFour.forEach(square => {currentColourArray[square] = blank})
+        setScoreDisplay((score) => score + 4)
         return true;
       }
     }
@@ -69,13 +72,13 @@ const App = () => {
       const columnOfThree = [i, i+TILES_PER_ROW, i+TILES_PER_ROW*2]
       // Gets the colour of the first item in the array
       const decidedColour = currentColourArray[i]
-
+      // Checks if the colour is blank to stop counting as a match
       const isBlank = currentColourArray[i] === blank
 
       // checks if the three items in the column are the same colour if true turn blank
       if(columnOfThree.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
-        columnOfThree.forEach(square => {
-        currentColourArray[square] = blank})
+        columnOfThree.forEach(square => {currentColourArray[square] = blank})
+        setScoreDisplay((score) => score + 3)
         return true;
       }
     }
@@ -96,8 +99,8 @@ const App = () => {
 
       // checks if the three items in the column are the same colour if true turn blank
       if(rowOfFour.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
-        rowOfFour.forEach(square => {
-          currentColourArray[square] = blank})
+        rowOfFour.forEach(square => {currentColourArray[square] = blank})
+        setScoreDisplay((score) => score + 4)
         return true;
       }
     }
@@ -118,9 +121,9 @@ const App = () => {
 
       // checks if the three items in the column are the same colour if true turn blank
       if(rowOfThree.every(square => currentColourArray[square] === decidedColour && !isBlank)) {
-        rowOfThree.forEach(square => {
-          currentColourArray[square] = blank})
-          return true;
+        rowOfThree.forEach(square => {currentColourArray[square] = blank})
+        setScoreDisplay((score) => score + 3)
+        return true;
       }
     }
   }
@@ -131,10 +134,11 @@ const App = () => {
   const moveIntoSquareBelow = () => {
     for(let i = 0; i <= 55; i++) {
 
+      // Creates an array of the first row
       const firstRow = [0,1,2,3,4,5,6,7]
-
+      // Checks if the index is in the first row
       const isFirstRow = firstRow.includes(i)
-
+      // Checks if the square below is blank
       if(isFirstRow && currentColourArray[i] === blank) {
         currentColourArray[i] = candyColours[Math.floor(Math.random() * candyColours.length)]
       }
@@ -223,7 +227,7 @@ const App = () => {
 
   }, [])
 
-  // Runs the check column/row functions every 100ms
+  // basically gamme loop, runs the check column/row functions, move blank, and update array every 100ms
   useEffect(() => {
     const timer = setInterval(() => {
       checkForColumnOfFour()
@@ -257,9 +261,10 @@ const App = () => {
             onDragEnd = {dragEnd}
           />
           ))}
-
       </div>
+      <Scoreboard score={scoreDisplay}/>
     </div>
+    
   );
 }
 
