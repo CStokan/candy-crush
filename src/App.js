@@ -11,8 +11,8 @@ import Scoreboard from './components/ScoreBoard';
 
 // TILES_PER_ROW of the board
 const TILES_PER_ROW = 8;
-
-// Candy colours
+ 
+// Array of the colours
 const candyColours= [
   redCandy,
   yellowCandy,
